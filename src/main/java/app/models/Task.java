@@ -9,9 +9,18 @@ public class Task {
     private Long id;
     private String description;
     private String name;
-    private User assignee;
+    private User user;
     private LocalDateTime created;
     private LocalDateTime finished;
+    private Boolean isDone;
+
+    public Boolean getDone() {
+        return isDone;
+    }
+
+    public void setDone(Boolean done) {
+        isDone = done;
+    }
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
@@ -79,11 +88,11 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    public User getAssignee() {
-        return assignee;
+    public User getUser() {
+        return user;
     }
 
-    public void setAssignee(User assignee) {
-        this.assignee = assignee;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

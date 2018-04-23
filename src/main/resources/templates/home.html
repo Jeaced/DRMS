@@ -5,6 +5,9 @@
     <title>Home</title>
 </head>
 <body>
+
+<div th:insert="~{menu :: copy}"></div>
+
 <h1>Room tasks:</h1>
 <h2>Your tasks:</h2>
 <tr th:each="task : ${tasks}">

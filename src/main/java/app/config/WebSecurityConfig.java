@@ -1,4 +1,4 @@
-package app;
+package app.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Bean(name = "authenticationManager")
 
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

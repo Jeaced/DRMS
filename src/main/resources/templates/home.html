@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<h1>Room tasks:</h1>
+<h2>Your tasks:</h2>
+<tr th:each="task : ${tasks}">
+    <td th:text="${task.id}">1</td>
+    <td th:text="${task.description}"></td>
+</tr>
+</body>
+</html>

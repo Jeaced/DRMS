@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+
+<div th:insert="~{menu :: copy}"></div>
+
+<h1>Room tasks:</h1>
+
+<h2>New Tasks:</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>User</th>
+        <th>Created</th>
+        <th>Finished</th>
+        <th>Update</th>
+    </tr>
+    <tr th:each="task : ${newTasks}">
+        <td th:text="${task.id}">1</td>
+        <td th:text="${task.type}"></td>
+        <td th:text="${task.name}"></td>
+        <td th:text="${task.description}"></td>
+        <td>–</td>
+        <td th:text="${task.created}"></td>
+        <td th:text="${task.finished}"></td>
+        <td>
+            <form method="post" th:action="@{/dashboard/select-task}">
+                <input type="hidden" name="selectId" th:value="${task.id}"/>
+                <input type="submit" value="Will do it"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<h2>Your Tasks:</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>User</th>
+        <th>Created</th>
+        <th>Finished</th>
+        <th>Update</th>
+    </tr>
+    <tr th:each="task : ${assignedTasks}">
+        <td th:text="${task.id}">1</td>
+        <td th:text="${task.type}"></td>
+        <td th:text="${task.name}"></td>
+        <td th:text="${task.description}"></td>
+        <td th:text="${task.user.username}"></td>
+        <td th:text="${task.created}"></td>
+        <td th:text="${task.finished}"></td>
+        <td>
+            <form method="post" th:action="@{/dashboard/reject-task}">
+                <input type="hidden" name="rejectId" th:value="${task.id}"/>
+                <input type="submit" value="Reject"/>
+            </form>
+            <form method="post" th:action="@{/dashboard/finish-task}">
+                <input type="hidden" name="doneId" th:value="${task.id}"/>
+                <input type="submit" value="Done"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+
+<h2>Finished Tasks:</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>User</th>
+        <th>Created</th>
+        <th>Finished</th>
+        <th>Update</th>
+    </tr>
+    <tr th:each="task : ${finishedTasks}">
+        <td th:text="${task.id}">1</td>
+        <td th:text="${task.type}"></td>
+        <td th:text="${task.name}"></td>
+        <td th:text="${task.description}"></td>
+        <td th:text="${task.user.username}"></td>
+        <td th:text="${task.created}"></td>
+        <td th:text="${task.finished}"></td>
+        <td>
+            <span th:text="${task.status}">${task.status}</span><br>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

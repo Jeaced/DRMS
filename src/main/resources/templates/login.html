@@ -7,17 +7,15 @@
 
 <div class="container">
     <form th:action="@{/login}" method="POST" class="form-signin">
-        <h2 class="form-signin-heading" th:text="LogIn"></h2>
-        <br/>
+        <h2 class="form-signin-heading">System Authorization</h2>
+
+        <p style="font-size: 20px; color: #FF1C19;" th:text="${error}"></p>
 
         <input type="text" id="username" name="username" th:placeholder="Username"
                class="form-control"/> <br/>
         <input type="password" th:placeholder="Password"
                id="password" name="password" class="form-control"/> <br/>
 
-        <div align="left" th:if="${error}" th:attribute="${error}">
-            <p style="font-size: 20px; color: #FF1C19;" th:text="${error}"></p>
-        </div>
         <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
                 th:text="Login"></button>
     </form>

@@ -1,6 +1,7 @@
 package app.models;
 
 public enum TaskStatus {
-    DONE,
-    ASSIGNED
+    NEW,
+    ASSIGNED,
+    DONE
 }

@@ -14,7 +14,7 @@
     <li class="menu-item" sec:authorize="hasRole('ROLE_ADMIN')"><a href="admin-panel">Admin Panel</a></li>
     <li class="menu-item" sec:authorize="isAnonymous()"><a href="login">Sign In</a></li>
     <li class="menu-item" sec:authorize="isAnonymous()"><a href="registration">Sign Up</a></li>
-    <li class="menu-item" sec:authorize="isAuthenticated()"><span sec:authentication="name"></span></li>
+    <li class="menu-item" sec:authorize="isAuthenticated()">Hi, <span sec:authentication="name">!</span></li>
     <li class="menu-item" sec:authorize="isAuthenticated()"><a href="logout">Log Out</a></li>
 </ul>
 

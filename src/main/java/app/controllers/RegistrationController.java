@@ -2,7 +2,7 @@ package app.controllers;
 
 import app.models.User;
 import app.services.SecurityService;
-import app.services.UserService;
+import app.services.interfaces.IUserService;
 import app.validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ public class RegistrationController {
     private UserValidator userValidator;
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @Autowired
     private SecurityService securityService;
@@ -41,9 +41,8 @@ public class RegistrationController {
 
         userService.save(user);
 
-        securityService.autologin(user.getUsername(), user.getPassword());
+//        securityService.autologin(user.getUsername(), user.getPassword());
 
-
-        return "redirect:/home";
+        return "redirect:/login";
     }
 }

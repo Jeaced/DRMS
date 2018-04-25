@@ -12,15 +12,6 @@ public class Task {
     private User user;
     private LocalDateTime created;
     private LocalDateTime finished;
-    private Boolean isDone;
-
-    public Boolean getDone() {
-        return isDone;
-    }
-
-    public void setDone(Boolean done) {
-        isDone = done;
-    }
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;

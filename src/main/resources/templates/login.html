@@ -2,8 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org" xmlns:value="http://www.w3.org/1999/xhtml">
 
+<style>
+div.container{
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+</style>
+
+
 <body>
 <div th:insert="~{menu :: copy}"></div>
+<div th:insert="~{registration :: copy}"></div>
 
 <div class="container">
     <form th:action="@{/login}" method="POST" class="form-signin">

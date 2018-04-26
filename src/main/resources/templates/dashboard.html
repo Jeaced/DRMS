@@ -33,6 +33,30 @@
 
     }
 
+    input.enterTast{
+        width: 30%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input.submitButton{
+        width: 10%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    label{
+        color: #FF1C19;
+    }
 
 </style>
 
@@ -46,6 +70,15 @@
 <div th:insert="~{menu :: copy}"></div>
 
 <h1>Room tasks:</h1>
+
+<form method="post" th:action="@{/dashboard/add-task}" th:object="${task}">
+    <input type="text" th:field="*{description}" class="enterTast" placeholder="Enter a new task here"  name="newTaskText" >
+
+    <input type="submit" class="submitButton" value="Add">
+    <label th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+           class="validation-message"></label>
+</form>
+
 
 <div class="flex-container">
 

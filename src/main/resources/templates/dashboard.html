@@ -5,34 +5,27 @@
     table {
         background-color: #f2f2f2;
     }
-
     caption {
         font-size: xx-large;
     }
-
     input[type=submit] {
         background-color: #4CAF50;
         color: white;
         cursor: pointer;
     }
-
     input.reject {
         background-color: crimson;
         color: white;
         cursor: pointer;
     }
-
     .flex-container {
         display: flex;
         flex-wrap: wrap;
     }
-
     .flex-container > table {
         margin: 50px;
         width: 40%;
-
     }
-
     input.enterTast{
         width: 30%;
         padding: 12px 20px;
@@ -42,7 +35,6 @@
         border-radius: 4px;
         box-sizing: border-box;
     }
-
     input.submitButton{
         width: 10%;
         background-color: #4CAF50;
@@ -53,11 +45,9 @@
         border-radius: 4px;
         cursor: pointer;
     }
-
     label{
         color: #FF1C19;
     }
-
 </style>
 
 
@@ -72,13 +62,15 @@
 <h1>Room tasks:</h1>
 
 <form method="post" th:action="@{/dashboard/add-task}" th:object="${task}">
-    <input type="text" th:field="*{description}" class="enterTast" placeholder="Enter a new task here"  name="newTaskText" >
+    <p style="font-size: 20px; color: #FF1C19;" th:text="${error}"></p>
+
+    <input type="text" th:field="*{description}" class="enterTask" placeholder="Enter a new task here"
+           name="newTaskText" required>
 
     <input type="submit" class="submitButton" value="Add">
     <label th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
            class="validation-message"></label>
 </form>
-
 
 <div class="flex-container">
 
@@ -154,7 +146,6 @@
             <th>User</th>
             <th>Created</th>
             <th>Finished</th>
-            <th>Update</th>
         </tr>
         <tr th:each="task : ${finishedTasks}">
             <td th:text="${task.id}">1</td>
@@ -164,12 +155,8 @@
             <td th:text="${task.user.username}"></td>
             <td th:text="${task.created}"></td>
             <td th:text="${task.finished}"></td>
-            <td>
-                <span th:text="${task.status}">${task.status}</span><br>
-            </td>
         </tr>
     </table>
-
 </div>
 
 </body>

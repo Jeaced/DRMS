@@ -1,8 +1,9 @@
 package app.validators;
 
-
-import app.models.User;
-import app.services.interfaces.IUserService;
+import app.DTO.UserDTO;
+import app.services.interfaces.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -11,9 +12,10 @@ import org.springframework.validation.Validator;
 
 @Component
 public class UserValidator implements Validator {
+    private final static Logger log = LogManager.getLogger(UserValidator.class);
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -22,16 +24,20 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
-        User user = (User) o;
+        log.debug("Validating user data");
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "NotEmpty");
+        UserDTO user = (UserDTO) o;
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
 
-        if (user.getPassword().length() < 3)
+        if (user.getPassword().length() < 6) {
             errors.rejectValue("password", "Pass.Too.Short");
+            return;
+        }
 
         if (userService.findByUsername(user.getUsername()) != null) {
-            errors.rejectValue("login", "UsernameExists");
+            errors.rejectValue("username", "UsernameExists");
         }
     }
 }

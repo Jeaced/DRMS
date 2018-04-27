@@ -1,85 +1,117 @@
 package app.controllers;
 
+import app.DTO.TaskDTO;
 import app.models.Task;
-import app.models.TaskStatus;
 import app.models.User;
-import app.services.interfaces.ITaskService;
-import app.services.interfaces.IUserService;
+import app.services.ServiceException;
+import app.services.interfaces.TaskService;
+import app.services.interfaces.UserService;
+import app.validators.TaskValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class DashboardController {
-    @Autowired
-    ITaskService taskService;
+    private final static Logger log = LogManager.getLogger(DashboardController.class);
+    private ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    IUserService userService;
+    TaskService taskService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    TaskValidator taskValidator;
 
     @GetMapping({"/dashboard"})
     String getDashboard(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("GET request /dashboard");
 
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
-        List<Task> newTasks = taskService.findAllNew();
-        List<Task> userTasks = taskService.findAll(user);
-
-        List<Task> assignedTasks = userTasks
-                .stream()
-                .filter(t -> t.getStatus() == TaskStatus.ASSIGNED)
-                .collect(Collectors.toList());
-
-        List<Task> finishedTasks = userTasks
-                .stream()
-                .filter(t -> t.getStatus() == TaskStatus.DONE)
-                .collect(Collectors.toList());
-
-        model.addAttribute("newTasks", newTasks);
-        model.addAttribute("assignedTasks", assignedTasks);
-        model.addAttribute("finishedTasks", finishedTasks);
+        model.addAttribute("newTasks", taskService.findAllNew());
+        model.addAttribute("assignedTasks", taskService.findAllAssignedToUser(user));
+        model.addAttribute("finishedTasks", taskService.findAllFinishedByUser(user));
+        model.addAttribute("task", new TaskDTO());
 
         return "dashboard";
     }
 
     @PostMapping({"/dashboard/select-task"})
-    String selectTask(@RequestParam("selectId") String selectId, Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.findByUsername(username);
+    String selectTask(@RequestParam("selectId") String selectId, RedirectAttributes redirectAttributes) {
+        log.info(String.format("Task #%s selection", selectId));
 
-        Task task = taskService.find(Long.parseLong(selectId));
-        task.setUser(user);
-        task.setStatus(TaskStatus.ASSIGNED);
-        taskService.save(task);
+        try {
+            Long taskId = Long.parseLong(selectId);
+            taskService.selectTask(taskId);
+        } catch (NumberFormatException | ServiceException e) {
+            log.error(e);
+            redirectAttributes.addFlashAttribute("error",
+                    "An error occurred during task selection. Please, try again later.");
+            return "redirect:/dashboard";
+        }
 
         return "redirect:/dashboard";
     }
 
     @PostMapping({"/dashboard/reject-task"})
-    String rejectTask(@RequestParam("rejectId") String rejectId, Model model) {
-        Task task  = taskService.find(Long.parseLong(rejectId));
-        task.setUser(null);
-        task.setStatus(TaskStatus.NEW);
-        taskService.save(task);
+    String rejectTask(@RequestParam("rejectId") String rejectId, RedirectAttributes redirectAttributes) {
+        log.info(String.format("Task #%s rejection", rejectId));
+
+        try {
+            Long taskId = Long.parseLong(rejectId);
+            taskService.rejectTask(taskId);
+        } catch (NumberFormatException | ServiceException e) {
+            log.error(e);
+            redirectAttributes.addFlashAttribute("error",
+                    "An error occurred during task rejection. Please, try again later.");
+            return "redirect:/dashboard";
+        }
 
         return "redirect:/dashboard";
     }
 
     @PostMapping({"/dashboard/finish-task"})
-    String finishTask(@RequestParam("doneId") String doneId, Model model) {
-        Task task  = taskService.find(Long.parseLong(doneId));
-        task.setFinished(LocalDateTime.now());
-        task.setStatus(TaskStatus.DONE);
-        taskService.save(task);
+    String finishTask(@RequestParam("doneId") String finishedId, RedirectAttributes redirectAttributes) {
+        log.info(String.format("Task #%s finishing", finishedId));
+
+        try {
+            Long taskId = Long.parseLong(finishedId);
+            taskService.finishTask(taskId);
+        } catch (NumberFormatException | ServiceException e) {
+            log.error(e);
+            redirectAttributes.addFlashAttribute("error",
+                    "An error occurred during task finishing. Please, try again later.");
+            return "redirect:/dashboard";
+        }
+
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/dashboard/add-task")
+    String addTask(@ModelAttribute("task") TaskDTO taskDTO, BindingResult bindingResult,
+                   RedirectAttributes redirectAttributes) {
+        log.info("Task creation");
+
+        taskValidator.validate(taskDTO, bindingResult);
+
+        if (bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("error", "Task Description cannot be empty.");
+            return "redirect:/dashboard";
+        }
+
+        Task task = modelMapper.map(taskDTO, Task.class);
+        taskService.addNewTaskManually(task);
 
         return "redirect:/dashboard";
     }

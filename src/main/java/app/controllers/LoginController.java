@@ -5,23 +5,24 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class LoginController {
+    private final static Logger log = LogManager.getLogger(LoginController.class);
 
     @GetMapping("/login")
-    public String login(Model model, String error, String logout) {
-//        log.info("Get request /login");
+    public String loginGet(Model model, String error, String logout) {
+        log.info("GET request /login");
+
         if (error != null) {
-//            log.info("Wrong username or password.");
+            log.debug("Wrong username or password.");
             model.addAttribute("error", "Wrong username or password");
         }
         if (logout != null) {
-//            log.info("User is logged out.");
+            log.debug("User has logged out.");
             model.addAttribute("message", "Logged out");
         }
+
         return "login";
     }
 }

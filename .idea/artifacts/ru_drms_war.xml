@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="ru.drms:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="ru.drms-2.0.0.RELEASE.war">
-      <element id="artifact" artifact-name="ru.drms:war exploded" />
-    </root>
-  </artifact>
-</component>

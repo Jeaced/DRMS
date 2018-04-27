@@ -22,9 +22,9 @@ div.container{
         <p style="font-size: 20px; color: #FF1C19;" th:text="${error}"></p>
 
         <input type="text" id="username" name="username" th:placeholder="Username"
-               class="form-control"/> <br/>
+               class="form-control" required/> <br/>
         <input type="password" th:placeholder="Password"
-               id="password" name="password" class="form-control"/> <br/>
+               id="password" name="password" class="form-control" required/> <br/>
 
         <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
                 th:text="Login"></button>

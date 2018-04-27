@@ -1,20 +1,19 @@
-package app.services;
+package app.services.impl;
 
 import app.DAO.UserDAO;
 import app.models.User;
-import app.services.interfaces.IUserService;
+import app.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements IUserService {
-
+public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
     private UserDAO userDAO;
-
 
     @Override
     public void save(User user) {

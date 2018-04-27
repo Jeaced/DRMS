@@ -5,7 +5,10 @@ import app.models.Task;
 import app.models.TaskStatus;
 import app.models.User;
 import app.services.interfaces.ITaskService;
+import app.services.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +19,9 @@ import java.util.Optional;
 public class TaskService implements ITaskService {
     @Autowired
     TaskDAO taskRepository;
+
+    @Autowired
+    IUserService userService;
 
     @Override
     public void save(Task task) {
@@ -36,29 +42,55 @@ public class TaskService implements ITaskService {
 
     @Override
     public List<Task> findAllNew() {
-        this.addNewTask();
+//        this.addNewTask();
         return taskRepository.findAllByStatus(TaskStatus.NEW);
     }
 
     @Override
-    public List<Task> findAll(User user) {
-        return taskRepository.findAllByUser(user);
-    }
-
-    private void addNewTask() {
-        /*
-         * Temporary solution
-         */
-        // TODO: tasks should be added from sensor system
+    public void addNewTaskManually(String text) {
         Task task = new Task();
 
         task.setName("Megatask");
-        task.setDescription("DO THIS !");
-        task.setUser(null);
+        task.setDescription(text);
+        task.setUser(userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         task.setCreated(LocalDateTime.now());
         task.setFinished(null);
         task.setStatus(TaskStatus.NEW);
 
         this.save(task);
+    }
+
+    @Override
+    public void finishTask(String doneId) {
+        Task task = find(Long.parseLong(doneId));
+        task.setFinished(LocalDateTime.now());
+        task.setStatus(TaskStatus.DONE);
+        save(task);
+
+    }
+
+    @Override
+    public void rejectTask(String rejectId) {
+        Task task = find(Long.parseLong(rejectId));
+        task.setUser(null);
+        task.setStatus(TaskStatus.NEW);
+        save(task);
+    }
+
+    @Override
+    public void selectTask(String selectId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
+
+        Task task = find(Long.parseLong(selectId));
+        task.setUser(user);
+        task.setStatus(TaskStatus.ASSIGNED);
+        save(task);
+
+    }
+
+    @Override
+    public List<Task> findAll(User user) {
+        return taskRepository.findAllByUser(user);
     }
 }

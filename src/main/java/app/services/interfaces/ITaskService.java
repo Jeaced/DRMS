@@ -16,4 +16,12 @@ public interface ITaskService {
     List<Task> findAll(User user);
 
     List<Task> findAllNew();
+
+    void addNewTaskManually(String text);
+
+    void finishTask(String doneId);
+
+    void rejectTask(String rejectId);
+
+    void selectTask(String selectId);
 }

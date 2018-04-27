@@ -73,3 +73,10 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+
+# Project specific files
+/core/core.iml
+/sensor/sensor.iml
+/web/web.iml
+/ru.drms.iml
+/.idea/**

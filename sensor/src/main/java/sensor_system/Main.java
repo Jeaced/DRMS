@@ -3,16 +3,10 @@ package sensor_system;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.DoubleSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import sensor_system.agents.Human;
-import sensor_system.resources.CumulativeResource;
-import sensor_system.resources.ExpiringResource;
-import sensor_system.resources.Resource;
 import sensor_system.environment.RoomSimulator;
 import sensor_system.resources.ResourceSerializer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Main {

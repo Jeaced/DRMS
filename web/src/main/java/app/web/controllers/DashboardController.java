@@ -18,6 +18,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 public class DashboardController {
     private final static Logger log = LogManager.getLogger(DashboardController.class);
@@ -39,9 +42,24 @@ public class DashboardController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
-        model.addAttribute("newTasks", taskService.findAllNew());
-        model.addAttribute("assignedTasks", taskService.findAllAssignedToUser(user));
-        model.addAttribute("finishedTasks", taskService.findAllFinishedByUser(user));
+        List<TaskDTO> newTasks = taskService.findAllNew()
+                .stream()
+                .map(task -> modelMapper.map(task, TaskDTO.class))
+                .collect(Collectors.toList());
+
+        List<TaskDTO> assignedTasks = taskService.findAllAssignedToUser(user)
+                .stream()
+                .map(task -> modelMapper.map(task, TaskDTO.class))
+                .collect(Collectors.toList());
+
+        List<TaskDTO> finishedTasks = taskService.findAllFinishedByUser(user)
+                .stream()
+                .map(task -> modelMapper.map(task, TaskDTO.class))
+                .collect(Collectors.toList());
+
+        model.addAttribute("newTasks", newTasks);
+        model.addAttribute("assignedTasks", assignedTasks);
+        model.addAttribute("finishedTasks", finishedTasks);
         model.addAttribute("task", new TaskDTO());
 
         return "dashboard";

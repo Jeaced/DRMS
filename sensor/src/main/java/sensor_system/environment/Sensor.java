@@ -24,8 +24,7 @@ public class Sensor extends Thread {
 
     @Override
     public void run() {
-        Producer<String, Double> sensorProducer
-                = new KafkaProducer<>(producerConfig);
+        Producer<String, Double> sensorProducer = new KafkaProducer<>(producerConfig);
 
         System.out.println(Thread.currentThread().getName());
 

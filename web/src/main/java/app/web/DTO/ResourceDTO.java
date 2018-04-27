@@ -1,16 +1,10 @@
-package app.core.models;
+package app.web.DTO;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "resources")
-public class Resource {
+public class ResourceDTO {
     private Long id;
     private String name;
     private double value;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }

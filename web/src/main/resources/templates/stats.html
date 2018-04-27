@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<style>
+    table {
+        background-color: #f2f2f2;
+    }
+    caption {
+        font-size: xx-large;
+    }
+    input[type=submit] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+    .flex-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .flex-container > table {
+        margin: 50px;
+        width: 40%;
+    }
+    label{
+        color: #FF1C19;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Stats</title>
+</head>
+
+<body>
+
+<div th:insert="~{menu :: copy}"></div>
+
+<h1>Stats:</h1>
+
+<div class="flex-container">
+    <table>
+        <caption>Resources</caption>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+        <tr th:each="resource : ${resources}">
+            <td th:text="${resource.name}"></td>
+            <td th:text="${#numbers.formatDecimal(resource.value, 1, 'COMMA', 2, 'POINT')}"></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

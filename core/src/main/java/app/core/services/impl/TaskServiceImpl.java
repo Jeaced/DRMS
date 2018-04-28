@@ -3,6 +3,7 @@ package app.core.services.impl;
 import app.core.DAO.TaskDAO;
 import app.core.models.Task;
 import app.core.models.TaskStatus;
+import app.core.models.TaskType;
 import app.core.models.User;
 import app.core.services.ServiceException;
 import app.core.services.interfaces.TaskService;
@@ -53,7 +54,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void addNewTaskManually(Task task) {
-        task.setName("Megatask");
+        task.setType(TaskType.FOOD);
         task.setUser(null);
         task.setCreated(LocalDateTime.now());
         task.setFinished(null);

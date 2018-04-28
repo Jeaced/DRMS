@@ -12,6 +12,8 @@ public class Task {
     private LocalDateTime created;
     private LocalDateTime finished;
 
+    private Resource resource;
+
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
@@ -76,5 +78,14 @@ public class Task {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "task")
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
     }
 }

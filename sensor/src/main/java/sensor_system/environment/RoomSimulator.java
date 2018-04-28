@@ -1,5 +1,7 @@
 package sensor_system.environment;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sensor_system.agents.Human;
 import sensor_system.resources.Resource;
 
@@ -7,6 +9,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RoomSimulator extends Thread {
+    private final static Logger log = LogManager.getLogger(RoomSimulator.class);
+
     private Room room;
     private List<Thread> humans;
     private List<Sensor> sensors;
@@ -50,6 +54,8 @@ public class RoomSimulator extends Thread {
     }
 
     public void run() {
+        log.info("Starting room simulation");
+
         Scanner sc = new Scanner(System.in);
         stop.set(false);
 
@@ -59,11 +65,12 @@ public class RoomSimulator extends Thread {
 
             if (command.equals("stop")) {
                 break;
-            } else {
+            } else if (!restoreResource(command)) {
                 System.out.println("Unknown command");
             }
         }
 
+        log.info("Ending room simulation");
         stop.set(true);
     }
 
@@ -101,9 +108,47 @@ public class RoomSimulator extends Thread {
         resources.add(fruits);
         resources.add(vegetables);
         resources.add(meat);
-        resources.add(garbage);
         resources.add(mess);
+        resources.add(garbage);
 
         this.addResources(resources);
+    }
+
+    private boolean restoreResource(String resource) {
+        switch (resource.toLowerCase()) {
+            case "water":
+                this.room.getResources().get(0).get().restore();
+                log.info("Restored water resources");
+                return true;
+            case "toilet paper":
+                this.room.getResources().get(1).get().restore();
+                log.info("Restored toilet paper resources");
+                return true;
+            case "bread":
+                this.room.getResources().get(2).get().restore();
+                log.info("Restored bread resources");
+                return true;
+            case "fruits":
+                this.room.getResources().get(3).get().restore();
+                log.info("Restored fruits resources");
+                return true;
+            case "vegetables":
+                this.room.getResources().get(4).get().restore();
+                log.info("Restored vegetables resources");
+                return true;
+            case "meat":
+                this.room.getResources().get(5).get().restore();
+                log.info("Restored meat resources");
+                return true;
+            case "mess":
+                this.room.getResources().get(6).get().restore();
+                log.info("Restored mess resources");
+                return true;
+            case "garbage":
+                this.room.getResources().get(7).get().restore();
+                log.info("Restored garbage resources");
+                return true;
+        }
+        return false;
     }
 }

@@ -3,9 +3,8 @@ package app.core.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "resources")
+@Table(name = "resource")
 public class Resource {
-    @Id
     private Long id;
     private String name;
     private String unit;
@@ -15,8 +14,10 @@ public class Resource {
     private double maxValue;
     private boolean isExpiring;
     private boolean isOff;
-    private boolean hasTask;
 
+    private Task task;
+
+    @Id
     public Long getId() {
         return id;
     }
@@ -89,11 +90,13 @@ public class Resource {
         isOff = off;
     }
 
-    public boolean isHasTask() {
-        return hasTask;
+    @OneToOne
+    @JoinColumn(name = "resource_id")
+    public Task getTask() {
+        return task;
     }
 
-    public void setHasTask(boolean hasTask) {
-        this.hasTask = hasTask;
+    public void setTask(Task task) {
+        this.task = task;
     }
 }

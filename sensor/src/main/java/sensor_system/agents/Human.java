@@ -31,7 +31,6 @@ public class Human extends Thread {
                     .collect(Collectors.toList());
 
             int resourceId = ThreadLocalRandom.current().nextInt(availableResources.size());
-            resourceId = 0;
             AtomicReference<Resource> resource = availableResources.get(resourceId);
             AtomicReference<Resource>  garbage = availableResources.get(availableResources.size() - 1);
 
@@ -72,8 +71,7 @@ public class Human extends Thread {
             }
 
             try {
-//                Thread.sleep(ThreadLocalRandom.current().nextLong(5000));
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

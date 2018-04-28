@@ -3,7 +3,6 @@ package app.core.services.impl;
 import app.core.DAO.TaskDAO;
 import app.core.models.Task;
 import app.core.models.TaskStatus;
-import app.core.models.TaskType;
 import app.core.models.User;
 import app.core.services.ServiceException;
 import app.core.services.interfaces.TaskService;
@@ -111,6 +110,10 @@ public class TaskServiceImpl implements TaskService {
             task.setFinished(LocalDateTime.now());
             task.setStatus(TaskStatus.FINISHED);
             save(task);
+
+            if (task.getResource() != null) {
+                task.getResource().setTask(null);
+            }
 
             log.info(String.format("Task #%s status was changed to finished", taskId));
         } else {

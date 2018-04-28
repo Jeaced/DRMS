@@ -1,6 +1,8 @@
 package app.web.controllers;
 
+import app.core.DAO.TaskDAO;
 import app.core.models.TaskType;
+import app.web.DTO.ResourceDTO;
 import app.web.DTO.TaskDTO;
 import app.core.models.Task;
 import app.core.models.User;
@@ -10,6 +12,9 @@ import app.core.services.interfaces.UserService;
 import app.web.validators.TaskValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +24,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +46,9 @@ public class DashboardController {
 
     @Autowired
     TaskValidator taskValidator;
+
+    @Autowired
+    TaskDAO taskRepository;
 
     @GetMapping({"/dashboard"})
     String getDashboard(Model model) {
@@ -133,7 +145,7 @@ public class DashboardController {
         taskValidator.validate(taskDTO, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Please select the type of the task." );
+            redirectAttributes.addFlashAttribute("error", "Please select the type of the task.");
             return "redirect:/dashboard";
         }
 
@@ -141,5 +153,53 @@ public class DashboardController {
         taskService.addNewTaskManually(task);
 
         return "redirect:/dashboard";
+    }
+
+    @PostMapping("/dashboard/download")
+    String getData(HttpServletResponse response) {
+        ArrayList<Task> tasks = (ArrayList<Task>) taskRepository.findAll();
+        response.setContentType("text/plain");
+        String fileName = LocalDateTime.now() + "_tasks";
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".txt");
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONArray jsonArray = new JSONArray();
+        for (Task o : tasks) {
+            jsonArray.put(toJsonObject(o));
+        }
+        String a = null;
+        try {
+            a = jsonArray.toString(1);
+            out.println(a);
+            out.flush();
+            out.close();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "dashboard";
+    }
+
+    JSONObject toJsonObject(Task obj) {
+        JSONObject o = new JSONObject();
+        try {
+            o.put("id", obj.getId());
+            o.put("description", obj.getDescription());
+            if (obj.getUser() != null)
+                o.put("user", obj.getUser().getUsername());
+            else o.put("user", "-");
+            o.put("created", obj.getCreated());
+            o.put("finished", obj.getFinished());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return o;
     }
 }

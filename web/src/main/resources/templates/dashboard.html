@@ -5,28 +5,34 @@
     table {
         background-color: #f2f2f2;
     }
+
     caption {
         font-size: xx-large;
     }
+
     input[type=submit] {
         background-color: #4CAF50;
         color: white;
         cursor: pointer;
     }
+
     input.reject {
         background-color: crimson;
         color: white;
         cursor: pointer;
     }
+
     .flex-container {
         display: flex;
         flex-wrap: wrap;
     }
+
     .flex-container > table {
         margin: 50px;
         width: 40%;
     }
-    input.enterTask{
+
+    input.enterTask {
         width: 30%;
         padding: 12px 20px;
         margin: 8px 0;
@@ -35,7 +41,8 @@
         border-radius: 4px;
         box-sizing: border-box;
     }
-    input.submitButton{
+
+    input.submitButton {
         width: 10%;
         background-color: #4CAF50;
         color: white;
@@ -45,11 +52,12 @@
         border-radius: 4px;
         cursor: pointer;
     }
-    label{
+
+    label {
         color: #FF1C19;
     }
 
-    select{
+    select {
         width: 15%;
         padding: 12px 20px;
         margin: 8px 0;
@@ -61,8 +69,17 @@
         text-align: center;
     }
 
-    tr{
+    tr {
         align-self: center;
+    }
+
+    input[type=submit].download {
+        background-color: #4CAF50;
+        color: white;
+        border: #4CAF50;
+        border-radius: 4px;
+        cursor: pointer;
+
     }
 </style>
 
@@ -77,25 +94,33 @@
 
 <h1>Room tasks:</h1>
 
-<form method="post" th:action="@{/dashboard/add-task}" th:object="${task}">
-    <p style="font-size: 20px; color: #FF1C19;" th:text="${error}"></p>
 
-    <input type="text" th:field="*{description}" class="enterTask" placeholder="Enter a new task here"
-           name="newTaskText" required>
+<div>
+    <form method="post" th:action="@{/dashboard/add-task}" th:object="${task}">
+        <p style="font-size: 20px; color: #FF1C19;" th:text="${error}"></p>
 
-    <select th:field="*{type}">
-        <option value=""> Select task </option>
-        <option th:each="tp : ${types}"
-                th:value ="${tp}"
-                th:text ="${tp}"/>
-    </select>
+        <input type="text" th:field="*{description}" class="enterTask" placeholder="Enter a new task here"
+               name="newTaskText" required>
 
-    <input type="submit" class="submitButton" value="Add">
+        <select th:field="*{type}">
+            <option value=""> Select task</option>
+            <option th:each="tp : ${types}"
+                    th:value="${tp}"
+                    th:text="${tp}"/>
+        </select>
 
-    <label th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
-           class="validation-message"></label>
+        <input type="submit" class="submitButton" value="Add">
 
-</form>
+        <label th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+               class="validation-message"></label>
+
+    </form>
+</div>
+<div>
+    <form method="post" th:action="@{/dashboard/download}">
+        <input type="submit" class="download" value="Save statistics">
+    </form>
+</div>
 
 <div class="flex-container">
 

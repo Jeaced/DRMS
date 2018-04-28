@@ -1,6 +1,5 @@
 package app.core.kafka_consumer;
 
-
 import app.core.models.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;

@@ -1,7 +1,8 @@
-package sensor_system.resources;
+package sensor_system.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serializer;
+import sensor_system.resources.Resource;
 
 import java.util.Map;
 

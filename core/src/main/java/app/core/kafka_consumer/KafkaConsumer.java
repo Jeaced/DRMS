@@ -1,7 +1,9 @@
 package app.core.kafka_consumer;
 
 import app.core.DAO.ResourceDAO;
+import app.core.DAO.TaskDAO;
 import app.core.models.Resource;
+import app.core.utils.TaskGenerator;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,21 +17,27 @@ public class KafkaConsumer {
     @Autowired
     ResourceDAO resourceDAO;
 
+    @Autowired
+    TaskDAO taskDAO;
+
+    @Autowired
+    TaskGenerator taskGenerator;
+
     @KafkaListener(id = "batch-listener", topics = {"RoomResources"})
-    public void receive(@Payload List<ConsumerRecord<String, Double>> messages) {
-        for (ConsumerRecord<String, Double> cr : messages) {
+    public void receive(@Payload List<ConsumerRecord<String, Resource>> messages) {
+        for (ConsumerRecord<String, Resource> cr : messages) {
             if (cr.topic().equals("RoomResources")) {
-                String resourceName = cr.key();
-                Double resourceValue = cr.value();
+                Resource resource = cr.value();
+                resource.setHasTask(false);
 
-                Resource resource = resourceDAO.findByName(resourceName);
-
-                if (resource == null) {
-                    resource = new Resource();
-                    resource.setName(resourceName);
+                Resource resourceOld = resourceDAO.findByName(resource.getName());
+                if (resourceOld != null && !resourceOld.isHasTask()) {
+                    if (taskGenerator.isCriticalResource(resource)) {
+                        taskDAO.save(taskGenerator.generate(resource));
+                        resource.setHasTask(true);
+                    }
                 }
 
-                resource.setValue(resourceValue);
                 resourceDAO.save(resource);
             }
         }

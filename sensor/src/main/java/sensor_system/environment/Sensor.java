@@ -24,14 +24,13 @@ public class Sensor extends Thread {
 
     @Override
     public void run() {
-        Producer<String, Double> sensorProducer = new KafkaProducer<>(producerConfig);
+        Producer<String, Resource> sensorProducer = new KafkaProducer<>(producerConfig);
 
         System.out.println(Thread.currentThread().getName());
 
         while (!stop.get()) {
             sensorProducer.send(new ProducerRecord<>("RoomResources",
-                    resource.getName(), resource.getValue()));
-            System.out.println(resource);
+                    resource.getName(), resource));
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {

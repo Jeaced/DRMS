@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<style th:fragment="copy">
+    li.menu-item {
+        float: left;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: lightseagreen;
+    }
+
+    li a {
+        display: block;
+        color: #000;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover:not(.active) {
+        background-color: aquamarine;
+        color: black;
+    }
+
+    .active {
+        background-color: aquamarine;
+    }
+</style>
+<body>
+
+<ul th:fragment="copy">
+    <li class="menu-item"><a href="/">Home</a></li>
+    <li class="menu-item" sec:authorize="isAuthenticated()"><a href="/dashboard">Dashboard</a></li>
+    <li class="menu-item" sec:authorize="isAuthenticated()"><a href="/stats">Stats</a></li>
+    <li class="menu-item" sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin-panel">Admin Panel</a></li>
+    <li class="menu-item" sec:authorize="isAnonymous()"><a href="login">Sign In</a></li>
+    <li class="menu-item" sec:authorize="isAnonymous()"><a href="registration">Sign Up</a></li>
+    <li class="menu-item" sec:authorize="isAuthenticated()"><a href="/logout">Log Out</a></li>
+</ul>
+
+<p sec:authorize="isAuthenticated()">Hi, <span sec:authentication="name">!</span></p>
+
+</body>
+<footer>
+    <div id="copyright">
+        &copy; 2018 Dormitory Resource Management System
+    </div>
+</footer>
+
+</html>

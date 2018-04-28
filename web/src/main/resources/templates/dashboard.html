@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<style>
+    table {
+        background-color: #f2f2f2;
+    }
+
+    caption {
+        font-size: xx-large;
+    }
+
+    input[type=submit] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+
+    input.reject {
+        background-color: crimson;
+        color: white;
+        cursor: pointer;
+    }
+
+    .flex-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .flex-container > table {
+        margin: 50px;
+        width: 40%;
+    }
+
+    input.enterTask {
+        width: 30%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input.submitButton {
+        width: 10%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    label {
+        color: #FF1C19;
+    }
+
+    select {
+        width: 15%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        color: white;
+        display: inline-block;
+        background-color: teal;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    tr {
+        align-self: center;
+    }
+
+    input[type=submit].download {
+        background-color: #4CAF50;
+        color: white;
+        border: #4CAF50;
+        border-radius: 4px;
+        cursor: pointer;
+
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+
+<body>
+
+<div th:insert="~{menu :: copy}"></div>
+
+<h1>Room tasks:</h1>
+
+
+<div>
+    <form method="post" th:action="@{/dashboard/add-task}" th:object="${task}">
+        <p style="font-size: 20px; color: #FF1C19;" th:text="${error}"></p>
+
+        <input type="text" th:field="*{description}" class="enterTask" placeholder="Enter a new task here"
+               name="newTaskText" required>
+
+        <select th:field="*{type}">
+            <option value=""> Select task</option>
+            <option th:each="tp : ${types}"
+                    th:value="${tp}"
+                    th:text="${tp}"/>
+        </select>
+
+        <input type="submit" class="submitButton" value="Add">
+
+        <label th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+               class="validation-message"></label>
+
+    </form>
+</div>
+<div>
+    <form method="post" th:action="@{/dashboard/download}">
+        <input type="submit" class="download" value="Save statistics">
+    </form>
+</div>
+
+<div class="flex-container">
+
+    <table>
+        <caption>New tasks</caption>
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>User</th>
+            <th>Created</th>
+            <th>Update</th>
+        </tr>
+        <tr th:each="task : ${newTasks}">
+            <td th:text="${task.id}">1</td>
+            <td th:text="${task.type}"></td>
+            <td th:text="${task.description}"></td>
+            <td>–</td>
+            <td th:text="${task.created}"></td>
+            <td>
+                <form method="post" th:action="@{/dashboard/select-task}">
+                    <input type="hidden" name="selectId" th:value="${task.id}"/>
+                    <input type="submit" value="Will do it"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <caption>Your tasks</caption>
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>User</th>
+            <th>Created</th>
+            <th>Update</th>
+        </tr>
+        <tr th:each="task : ${assignedTasks}">
+            <td th:text="${task.id}">1</td>
+            <td th:text="${task.type}"></td>
+            <td th:text="${task.description}"></td>
+            <td th:text="${task.user.username}"></td>
+            <td th:text="${task.created}"></td>
+            <td>
+                <form method="post" th:action="@{/dashboard/finish-task}">
+                    <input type="hidden" name="doneId" th:value="${task.id}"/>
+                    <input type="submit" value="Done"/>
+                </form>
+                <form method="post" th:action="@{/dashboard/reject-task}">
+                    <input type="hidden" name="rejectId" th:value="${task.id}"/>
+                    <input class="reject" type="submit" value="Reject"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <caption>Finished tasks</caption>
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>User</th>
+            <th>Created</th>
+            <th>Finished</th>
+        </tr>
+        <tr th:each="task : ${finishedTasks}">
+            <td th:text="${task.id}">1</td>
+            <td th:text="${task.type}"></td>
+            <td th:text="${task.description}"></td>
+            <td th:text="${task.user.username}"></td>
+            <td th:text="${task.created}"></td>
+            <td th:text="${task.finished}"></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

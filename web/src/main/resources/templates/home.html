@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<style>
+    div.container {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+<div th:insert="~{menu :: copy}"></div>
+
+<div class="container">
+    <div><h1>Welcome to Dormitory Resources Management System!</h1></div>
+
+    <div sec:authorize="isAnonymous()">
+        <p>Please, <a href="login">authorize</a> in the system.</p>
+        <p>Or <a href="registration">create new account</a> if you do not hove one.</p>
+    </div>
+
+    <div sec:authorize="isAuthenticated()">
+        <p>You can see a list of available tasks at your <a href="dashboard">dashboard</a>.</p>
+        <!--<p>If you have no access to dashboard, please, contact admin or fill the access request form.</p>-->
+    </div>
+</div>
+
+<div th:insert="~{menu :: #copyright}"></div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<style th:fragment="copy">
+    input[type=text], input[type=password],select{
+        width: 30%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button[type=submit]{
+        width: 30%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button[type=submit]:hover{
+        background-color: #45a049;
+    }
+
+    div.col-md-6 {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+</style>
+
+<head>
+    <title>Registration Form</title>
+</head>
+<body>
+<div th:insert="~{menu :: copy}"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form autocomplete="off" action="#" th:action="@{/registration}"
+                  th:object="${user}" method="post" class="form-horizontal"
+                  role="form">
+                <h2>System Registration</h2>
+
+                <p style="font-size: 20px; color: #FF1C19;" th:text="${error}"></p>
+
+                <div class="form-group">
+                    <input type="text" th:field="*{username}" placeholder="Username"
+                           class="form-control" required/>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input type="password" th:field="*{password}" placeholder="Password"
+                               class="form-control" required/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:insert="~{menu :: #copyright}"></div>
+</body>
+</html>

@@ -159,24 +159,19 @@ public class DashboardController {
         response.setContentType("text/plain");
         String fileName = LocalDateTime.now() + "_tasks";
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".txt");
-        ServletOutputStream out = null;
-        try {
-            out = response.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        JSONArray jsonArray = new JSONArray();
-        for (Task o : tasks) {
-            jsonArray.put(toJsonObject(o));
-        }
-        String a;
-        try {
-            a = jsonArray.toString(1);
-            out.println(a);
-            out.flush();
-            out.close();
-        } catch (JSONException | IOException | NullPointerException e) {
+        try (ServletOutputStream out  = response.getOutputStream()){
+            JSONArray jsonArray = new JSONArray();
+            for (Task o : tasks) {
+                jsonArray.put(toJsonObject(o));
+            }
+            try {
+                String a = jsonArray.toString(1);
+                out.println(a);
+            } catch (JSONException | IOException e) {
+                log.error(e);
+            }
+        } catch (IOException e) {
             log.error(e);
         }
 

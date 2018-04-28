@@ -87,13 +87,13 @@ public class RoomSimulator extends Thread {
                 3L, "Bread", "loafs", 1., 1., 0.1, true
         );
         Resource fruits = new Resource(
-                4L, "Fruits", "pieces", 5.,10., 1., true
+                4L, "Fruits", "kg", 5.,10., 1., true
         );
         Resource vegetables = new Resource(
-                5L, "Vegetables", "pieces", 5.,10., 1., true
+                5L, "Vegetables", "kg", 5.,10., 1., true
         );
         Resource meat = new Resource(
-                6L, "Meat", "pieces", 2.,2., .5, true
+                6L, "Meat", "kg", 2.,2., .5, true
         );
         Resource mess = new Resource(
                 7L, "Mess", "stacks", 0., 5., false

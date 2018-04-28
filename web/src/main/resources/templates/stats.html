@@ -10,12 +10,6 @@
         font-size: xx-large;
     }
 
-    /*input[type=submit] {*/
-        /*background-color: #4CAF50;*/
-        /*color: white;*/
-        /*cursor: pointer;*/
-    /*}*/
-
     .flex-container {
         display: flex;
         flex-wrap: wrap;
@@ -56,8 +50,6 @@
 
 <div th:insert="~{menu :: copy}"></div>
 
-<!--<h1>Stats:</h1>-->
-
 <div class="flex-container">
     <table>
         <caption>Resources</caption>
@@ -67,7 +59,10 @@
         </tr>
         <tr th:each="resource : ${resources}">
             <td th:text="${resource.name}"></td>
-            <td th:text="${#numbers.formatDecimal(resource.value, 1, 'COMMA', 2, 'POINT')}"></td>
+            <td>
+                <span th:text="${#numbers.formatDecimal(resource.value, 1, 'COMMA', 2, 'POINT')}"></span>
+                 <span th:text="${resource.unit}"></span>
+            </td>
         </tr>
     </table>
 </div>

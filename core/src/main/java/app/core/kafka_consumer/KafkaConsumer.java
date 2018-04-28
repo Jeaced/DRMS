@@ -16,6 +16,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -71,6 +72,7 @@ public class KafkaConsumer {
                         if (task.getStatus() == TaskStatus.ASSIGNED || task.getStatus() == TaskStatus.NEW) {
                             log.info("Finishing the task");
                             task.setStatus(TaskStatus.FINISHED);
+                            task.setFinished(LocalDateTime.now());
                             taskDAO.save(task);
                             resource.setTask(null);
                         }

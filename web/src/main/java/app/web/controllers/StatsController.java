@@ -46,7 +46,12 @@ public class StatsController {
     }
 
     @PostMapping("/stats/download")
-    String getData(@RequestAttribute("resources") List<ResourceDTO> resources, HttpServletResponse response)  {
+    String getData(HttpServletResponse response)  {
+        List<ResourceDTO> resources = resourceService.findAll()
+                .stream()
+                .map(resource -> modelMapper.map(resource, ResourceDTO.class))
+                .collect(Collectors.toList());
+
         response.setContentType("text/plain");
         String fileName = LocalDateTime.now() + "_stats";
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".txt");
@@ -70,7 +75,7 @@ public class StatsController {
             out.close();
         } catch (JSONException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             e.printStackTrace();
         }
 

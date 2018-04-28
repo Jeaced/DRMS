@@ -4,6 +4,7 @@ public class ResourceDTO {
     private Long id;
     private String name;
     private double value;
+    private String unit;
 
     public Long getId() {
         return id;
@@ -27,5 +28,13 @@ public class ResourceDTO {
 
     public void setValue(double value) {
         this.value = value;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

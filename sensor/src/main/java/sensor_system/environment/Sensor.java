@@ -3,12 +3,16 @@ package sensor_system.environment;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sensor_system.resources.Resource;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Sensor extends Thread {
+    private final static Logger log = LogManager.getLogger(Sensor.class);
+
     private Resource resource;
     private AtomicBoolean stop;
     private Map<String, Object> producerConfig;
@@ -31,8 +35,9 @@ public class Sensor extends Thread {
         while (!stop.get()) {
             sensorProducer.send(new ProducerRecord<>("RoomResources",
                     resource.getName(), resource));
+            log.debug(resource);
             try {
-                Thread.sleep(5000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 System.out.println("got interrupted");
             }

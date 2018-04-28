@@ -1,8 +1,6 @@
 package sensor_system.environment;
 
 import sensor_system.agents.Human;
-import sensor_system.resources.CumulativeResource;
-import sensor_system.resources.ExpiringResource;
 import sensor_system.resources.Resource;
 
 import java.util.*;
@@ -72,29 +70,29 @@ public class RoomSimulator extends Thread {
     public void initializeResources() {
         List<Resource> resources = new ArrayList<>();
 
-        Resource water = new ExpiringResource(
-                1L, "water", "liters", 19., 19., 1.
+        Resource water = new Resource(
+                1L, "Water", "liters", 19., 19., 1., true
         );
-        Resource toilerPaper = new ExpiringResource(
-                2L, "toiletPaper", "rolls", 1., 2., 0.1
+        Resource toilerPaper = new Resource(
+                2L, "Toilet Paper", "rolls", 1., 2., 0.1, true
         );
-        Resource bread = new ExpiringResource(
-                3L, "bread", "loafs", 1., 1., 0.1
+        Resource bread = new Resource(
+                3L, "Bread", "loafs", 1., 1., 0.1, true
         );
-        Resource fruits = new ExpiringResource(
-                4L, "fruits", "pieces", 5.,10., 1.
+        Resource fruits = new Resource(
+                4L, "Fruits", "pieces", 5.,10., 1., true
         );
-        Resource vegetables = new ExpiringResource(
-                5L, "vegetables", "pieces", 5.,10., 1.
+        Resource vegetables = new Resource(
+                5L, "Vegetables", "pieces", 5.,10., 1., true
         );
-        Resource meat = new ExpiringResource(
-                6L, "meat", "pieces", 2.,2., .5
+        Resource meat = new Resource(
+                6L, "Meat", "pieces", 2.,2., .5, true
         );
-        Resource mess = new CumulativeResource(
-                7L, "mess", "stacks", 0., 5.
+        Resource mess = new Resource(
+                7L, "Mess", "stacks", 0., 5., false
         );
-        Resource garbage = new CumulativeResource(
-                8L, "garbage", "packets", 0., 4.
+        Resource garbage = new Resource(
+                8L, "Garbage", "packets", 0., 4., false
         );
 
         resources.add(water);

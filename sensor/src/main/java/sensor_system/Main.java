@@ -1,10 +1,9 @@
 package sensor_system;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.DoubleSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import sensor_system.environment.RoomSimulator;
-import sensor_system.resources.ResourceSerializer;
+import sensor_system.utils.ResourceSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +13,7 @@ public class Main {
         Map<String, Object> config = new HashMap<>();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, DoubleSerializer.class);
-//        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ResourceSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ResourceSerializer.class);
 
         RoomSimulator roomSimulator = new RoomSimulator();
         roomSimulator.setProducerConfig(config);
@@ -24,6 +22,8 @@ public class Main {
 
         roomSimulator.start();
 
+        roomSimulator.addHuman();
+        roomSimulator.addHuman();
         roomSimulator.addHuman();
     }
 }

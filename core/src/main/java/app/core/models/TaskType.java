@@ -4,6 +4,8 @@ public enum TaskType {
     GARBAGE,
     WATER,
     FOOD,
-    TOILET_PAPER
+    TOILET_PAPER,
+    MESS,
+    OTHERS
 }
 

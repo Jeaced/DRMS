@@ -75,8 +75,4 @@ crashlytics-build.properties
 fabric.properties
 
 # Project specific files
-/core/core.iml
-/sensor/sensor.iml
-/web/web.iml
-/ru.drms.iml
 /.idea/**

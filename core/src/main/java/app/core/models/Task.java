@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 public class Task {
     private Long id;
     private String description;
-    private String name;
     private User user;
     private LocalDateTime created;
     private LocalDateTime finished;
@@ -35,14 +34,6 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public LocalDateTime getCreated() {

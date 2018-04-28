@@ -34,11 +34,12 @@
 
 <ul th:fragment="copy">
     <li class="menu-item"><a href="/">Home</a></li>
-    <li class="menu-item"><a href="dashboard">Dashboard</a></li>
-    <li class="menu-item" sec:authorize="hasRole('ROLE_ADMIN')"><a href="admin-panel">Admin Panel</a></li>
+    <li class="menu-item"><a href="/dashboard">Dashboard</a></li>
+    <li class="menu-item"><a href="/stats">Stats</a></li>
+    <li class="menu-item" sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin-panel">Admin Panel</a></li>
     <li class="menu-item" sec:authorize="isAnonymous()"><a href="login">Sign In</a></li>
     <li class="menu-item" sec:authorize="isAnonymous()"><a href="registration">Sign Up</a></li>
-    <li class="menu-item" sec:authorize="isAuthenticated()"><a href="logout">Log Out</a></li>
+    <li class="menu-item" sec:authorize="isAuthenticated()"><a href="/logout">Log Out</a></li>
 </ul>
 
 <p sec:authorize="isAuthenticated()">Hi, <span sec:authentication="name">!</span></p>

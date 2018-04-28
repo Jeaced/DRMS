@@ -186,12 +186,15 @@ public class DashboardController {
 
         return "dashboard";
     }
+
     JSONObject toJsonObject(Task obj) {
         JSONObject o = new JSONObject();
         try {
             o.put("id", obj.getId());
             o.put("description", obj.getDescription());
-            o.put("user", obj.getUser().getUsername());
+            if (obj.getUser() != null)
+                o.put("user", obj.getUser().getUsername());
+            else o.put("user", "-");
             o.put("created", obj.getCreated());
             o.put("finished", obj.getFinished());
         } catch (JSONException e) {

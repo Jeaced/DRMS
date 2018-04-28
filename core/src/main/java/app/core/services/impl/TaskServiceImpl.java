@@ -54,7 +54,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void addNewTaskManually(Task task) {
-        task.setType(TaskType.FOOD);
         task.setUser(null);
         task.setCreated(LocalDateTime.now());
         task.setFinished(null);

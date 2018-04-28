@@ -1,5 +1,6 @@
 package app.web.controllers;
 
+import app.core.models.TaskType;
 import app.web.DTO.TaskDTO;
 import app.core.models.Task;
 import app.core.models.User;
@@ -18,8 +19,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class DashboardController {
@@ -61,6 +64,12 @@ public class DashboardController {
         model.addAttribute("assignedTasks", assignedTasks);
         model.addAttribute("finishedTasks", finishedTasks);
         model.addAttribute("task", new TaskDTO());
+
+        ArrayList<String> types = new ArrayList<>();
+        for (TaskType a : TaskType.values())
+            types.add(a.name());
+
+        model.addAttribute("types", types);
 
         return "dashboard";
     }
@@ -123,8 +132,8 @@ public class DashboardController {
 
         taskValidator.validate(taskDTO, bindingResult);
 
-        if (bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("error", "Task Description cannot be empty.");
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Please select the type of the task." );
             return "redirect:/dashboard";
         }
 

@@ -3,12 +3,12 @@ package sensor_system.agents;
 import sensor_system.resources.Resource;
 import sensor_system.environment.Room;
 
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class Human extends Thread {
@@ -22,56 +22,58 @@ public class Human extends Thread {
 
     @Override
     public void run() {
-        List<Resource> availableResources;
+        List<AtomicReference<Resource>> availableResources;
 
         while (!stop.get()) {
             availableResources = room.getResources()
                     .stream()
-                    .filter(resource -> !resource.isGone())
+                    .filter(resource -> !resource.get().isOff())
                     .collect(Collectors.toList());
 
-            int resourceId = ThreadLocalRandom.current().nextInt(availableResources.size() );
-            Resource resource = availableResources.get(resourceId);
-            Resource garbage = availableResources.get(availableResources.size() - 1);
+            int resourceId = ThreadLocalRandom.current().nextInt(availableResources.size());
+            resourceId = 0;
+            AtomicReference<Resource> resource = availableResources.get(resourceId);
+            AtomicReference<Resource>  garbage = availableResources.get(availableResources.size() - 1);
 
-            switch (resource.getName()) {
-                case "water":
-                    resource.use(truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 2.)));
+            switch (resource.get().getName()) {
+                case "Water":
+                    resource.get().use(truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 2.)));
                     break;
-                case "toiletPaper":
+                case "Toilet Paper":
                     double value = truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 0.1));
-                    resource.use(value);
-                    garbage.use(value);
+                    resource.get().use(value);
+                    garbage.get().use(value);
                     break;
-                case "bread":
-                    resource.use(truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 0.1)));
+                case "Bread":
+                    resource.get().use(truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 0.1)));
                     break;
-                case "fruits":
+                case "Fruits":
                     if (truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 1.)) > 0.6) {
-                        resource.use(1.);
-                        garbage.use(0.1);
+                        resource.get().use(1.);
+                        garbage.get().use(0.1);
                     }
                     break;
-                case "vegetables":
+                case "Vegetables":
                     if (truncateDouble(ThreadLocalRandom.current().nextDouble(0., 1.)) > 0.6) {
-                        resource.use(1.);
-                        garbage.use(0.1);
+                        resource.get().use(1.);
+                        garbage.get().use(0.1);
                     }
                     break;
-                case "meat":
-                    resource.use(truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 0.4)));
-                    garbage.use(0.1);
+                case "Meat":
+                    resource.get().use(truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 0.4)));
+                    garbage.get().use(0.1);
                     break;
-                case "mess":
-                    resource.use(truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 1.)));
+                case "Mess":
+                    resource.get().use(truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 1.)));
                     break;
-                case "garbage":
-                    resource.use(truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 1.)));
+                case "Garbage":
+                    resource.get().use(truncateDouble(ThreadLocalRandom.current().nextDouble(0.01, 1.)));
                     break;
             }
 
             try {
-                Thread.sleep(5000);
+//                Thread.sleep(ThreadLocalRandom.current().nextLong(5000));
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

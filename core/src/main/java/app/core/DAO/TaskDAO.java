@@ -2,6 +2,7 @@ package app.core.DAO;
 
 import app.core.models.Task;
 import app.core.models.TaskStatus;
+import app.core.models.TaskType;
 import app.core.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,6 @@ public interface TaskDAO extends JpaRepository<Task, Long> {
     List<Task> findAllByStatus(TaskStatus status);
 
     List<Task> findAllByUserAndStatus(User user, TaskStatus status);
+
+    List<Task> findAllByType(TaskType type);
 }

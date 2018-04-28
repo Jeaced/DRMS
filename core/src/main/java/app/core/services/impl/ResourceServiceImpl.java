@@ -3,6 +3,8 @@ package app.core.services.impl;
 import app.core.DAO.ResourceDAO;
 import app.core.models.Resource;
 import app.core.services.interfaces.ResourceService;
+import kafka.utils.json.JsonObject;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +19,5 @@ public class ResourceServiceImpl implements ResourceService {
     public List<Resource> findAll() {
         return resourceDAO.findAll();
     }
+
 }

@@ -20,8 +20,6 @@ public class TaskGenerator {
     }
 
     public Task generate(Resource resource) {
-//        if (!isCriticalResource(resource)) return null;
-
         Map<String, TaskType> tasksTypes = new HashMap<>();
 
         /* Task types */
@@ -33,12 +31,6 @@ public class TaskGenerator {
         tasksTypes.put("Meat", TaskType.FOOD);
         tasksTypes.put("Mess", TaskType.MESS);
         tasksTypes.put("Garbage", TaskType.GARBAGE);
-
-//        if (taskGenerator.isCriticalResource(resource)) {
-//            List<Task> tasks = taskDAO.findAllByType(TaskType.FOOD);
-//            System.out.println(resource);
-//            taskDAO.save(taskGenerator.generate(resource));
-//        }
 
         Map<String, List<String>> tasksDescriptionBeginnings = new HashMap<>();
         Map<String, List<String>> tasksDescriptionEndings = new HashMap<>();

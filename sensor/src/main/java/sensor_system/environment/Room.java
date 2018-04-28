@@ -1,6 +1,5 @@
 package sensor_system.environment;
 
-
 import sensor_system.resources.Resource;
 
 import java.util.ArrayList;

@@ -13,13 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,16 +65,14 @@ public class StatsController {
         for (ResourceDTO o : resources) {
             jsonArray.put(toJsonObject(o));
         }
-        String a = null;
+        String a;
         try {
             a = jsonArray.toString(1);
             out.println(a);
             out.flush();
             out.close();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException | NullPointerException e) {
-            e.printStackTrace();
+        } catch (JSONException | IOException | NullPointerException e) {
+            log.error(e);
         }
 
         return "stats";

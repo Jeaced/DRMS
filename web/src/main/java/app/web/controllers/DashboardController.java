@@ -2,7 +2,6 @@ package app.web.controllers;
 
 import app.core.DAO.TaskDAO;
 import app.core.models.TaskType;
-import app.web.DTO.ResourceDTO;
 import app.web.DTO.TaskDTO;
 import app.core.models.Task;
 import app.core.models.User;
@@ -31,7 +30,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 public class DashboardController {
@@ -172,16 +170,14 @@ public class DashboardController {
         for (Task o : tasks) {
             jsonArray.put(toJsonObject(o));
         }
-        String a = null;
+        String a;
         try {
             a = jsonArray.toString(1);
             out.println(a);
             out.flush();
             out.close();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (JSONException | IOException | NullPointerException e) {
+            log.error(e);
         }
 
         return "dashboard";

@@ -1,5 +1,7 @@
 package sensor_system.agents;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sensor_system.resources.Resource;
 import sensor_system.environment.Room;
 
@@ -12,6 +14,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class Human extends Thread {
+    private final static Logger log = LogManager.getLogger(Human.class);
+
     private Room room;
     private AtomicBoolean stop;
 
@@ -73,7 +77,7 @@ public class Human extends Thread {
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error(e);
             }
         }
     }

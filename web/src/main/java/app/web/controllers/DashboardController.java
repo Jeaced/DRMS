@@ -189,7 +189,7 @@ public class DashboardController {
             o.put("created", obj.getCreated());
             o.put("finished", obj.getFinished());
         } catch (JSONException e) {
-            e.printStackTrace();
+            log.error(e);
         }
         return o;
     }

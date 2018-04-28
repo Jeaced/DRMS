@@ -68,7 +68,9 @@ public class TaskServiceImpl implements TaskService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
-        Task task = taskDAO.findById(taskId).orElseThrow(ServiceException::new);
+        Task task = taskDAO.findById(taskId).orElseThrow(
+                () -> new ServiceException(String.format("Cannot find the task #%d", taskId))
+        );
 
         if (task.getStatus() == TaskStatus.NEW && task.getUser() == null) {
             task.setUser(user);
@@ -77,7 +79,7 @@ public class TaskServiceImpl implements TaskService {
 
             log.info(String.format("Task #%s status was changed to assigned", taskId));
         } else {
-            throw new ServiceException();
+            throw new ServiceException("An error occurred while selecting the task");
         }
     }
 
@@ -86,7 +88,9 @@ public class TaskServiceImpl implements TaskService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
-        Task task = taskDAO.findById(taskId).orElseThrow(ServiceException::new);
+        Task task = taskDAO.findById(taskId).orElseThrow(
+                () -> new ServiceException(String.format("Cannot find the task #%d", taskId))
+        );
 
         if (task.getStatus() == TaskStatus.ASSIGNED && user.getId().equals(task.getUser().getId())) {
             task.setUser(null);
@@ -95,7 +99,7 @@ public class TaskServiceImpl implements TaskService {
 
             log.info(String.format("Task #%s status was changed to new", taskId));
         } else {
-            throw new ServiceException();
+            throw new ServiceException("An error occurred while rejecting the task");
         }
     }
 
@@ -104,7 +108,9 @@ public class TaskServiceImpl implements TaskService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
-        Task task = taskDAO.findById(taskId).orElseThrow(ServiceException::new);
+        Task task = taskDAO.findById(taskId).orElseThrow(
+                () -> new ServiceException(String.format("Cannot find the task #%d", taskId))
+        );
 
         if (task.getStatus() == TaskStatus.ASSIGNED && user.getId().equals(task.getUser().getId())) {
             task.setFinished(LocalDateTime.now());
@@ -117,7 +123,7 @@ public class TaskServiceImpl implements TaskService {
 
             log.info(String.format("Task #%s status was changed to finished", taskId));
         } else {
-            throw new ServiceException();
+            throw new ServiceException("An error occurred while finishing the task");
         }
     }
 }

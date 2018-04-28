@@ -39,7 +39,8 @@ public class Sensor extends Thread {
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
-                System.out.println("got interrupted");
+                log.error(e);
+                Thread.currentThread().interrupt();
             }
         }
     }

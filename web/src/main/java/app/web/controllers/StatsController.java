@@ -79,7 +79,7 @@ public class StatsController {
             o.put("name", obj.getName());
             o.put("value", obj.getValue());
         } catch (JSONException e) {
-            e.printStackTrace();
+            log.error(e);
         }
         return o;
     }

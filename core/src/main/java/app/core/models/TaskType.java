@@ -6,3 +6,4 @@ public enum TaskType {
     FOOD,
     TOILET_PAPER
 }
+

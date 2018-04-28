@@ -48,6 +48,22 @@
     label{
         color: #FF1C19;
     }
+
+    select{
+        width: 15%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        color: white;
+        display: inline-block;
+        background-color: teal;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    tr{
+        align-self: center;
+    }
 </style>
 
 <head>
@@ -67,9 +83,18 @@
     <input type="text" th:field="*{description}" class="enterTask" placeholder="Enter a new task here"
            name="newTaskText" required>
 
+    <select th:field="*{type}">
+        <option value=""> Select task </option>
+        <option th:each="tp : ${types}"
+                th:value ="${tp}"
+                th:text ="${tp}"/>
+    </select>
+
     <input type="submit" class="submitButton" value="Add">
+
     <label th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
            class="validation-message"></label>
+
 </form>
 
 <div class="flex-container">
@@ -82,7 +107,6 @@
             <th>Description</th>
             <th>User</th>
             <th>Created</th>
-            <th>Finished</th>
             <th>Update</th>
         </tr>
         <tr th:each="task : ${newTasks}">
@@ -91,7 +115,6 @@
             <td th:text="${task.description}"></td>
             <td>–</td>
             <td th:text="${task.created}"></td>
-            <td th:text="${task.finished}"></td>
             <td>
                 <form method="post" th:action="@{/dashboard/select-task}">
                     <input type="hidden" name="selectId" th:value="${task.id}"/>
@@ -109,7 +132,6 @@
             <th>Description</th>
             <th>User</th>
             <th>Created</th>
-            <th>Finished</th>
             <th>Update</th>
         </tr>
         <tr th:each="task : ${assignedTasks}">
@@ -118,7 +140,6 @@
             <td th:text="${task.description}"></td>
             <td th:text="${task.user.username}"></td>
             <td th:text="${task.created}"></td>
-            <td th:text="${task.finished}"></td>
             <td>
                 <form method="post" th:action="@{/dashboard/finish-task}">
                     <input type="hidden" name="doneId" th:value="${task.id}"/>
